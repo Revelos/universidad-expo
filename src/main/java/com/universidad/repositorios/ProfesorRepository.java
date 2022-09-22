@@ -3,7 +3,11 @@ package com.universidad.repositorios;
 import com.universidad.modelo.entidades.Persona;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-
+/**
+ * hereda de persona repository y se asigna el nombre para luego injectarlo
+ *
+ * consultas por query
+ * */
 @Repository("repositorioProfesor")
 public interface ProfesorRepository extends PersonaRespository{
 

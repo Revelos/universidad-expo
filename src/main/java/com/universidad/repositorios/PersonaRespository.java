@@ -7,7 +7,11 @@ import org.springframework.data.repository.NoRepositoryBean;
 
 import java.util.List;
 import java.util.Optional;
-
+/**
+ * Repositorio a heredar
+ *
+ * consultas de metodos y por query
+ * */
 @NoRepositoryBean
 public interface PersonaRespository extends CrudRepository<Persona,Integer> {
 

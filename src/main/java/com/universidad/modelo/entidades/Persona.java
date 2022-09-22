@@ -7,7 +7,16 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
-
+/**
+* Entidad padre (Abstracta) la cual: alumno, empleado y profesor heredaran.
+* mediante @Inheritance se permite la realcion y cada tabla hija maneja
+* la llave primaria de la clase padre.
+*
+* se crea la propiedad "tipo" y se asignan los tipos que manejara: alumno,profesor empleado
+* se incrusta la clase direccion para utilizarla
+ *
+ * La fecha se persiste al ingresar y actualizar la entidad
+* */
 @Entity
 @Table
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -18,7 +27,8 @@ import java.util.Objects;
 )
 @JsonSubTypes({
         @JsonSubTypes.Type(value = Alumno.class, name = "alumno"),
-        @JsonSubTypes.Type(value = Profesor.class, name = "profesor")
+        @JsonSubTypes.Type(value = Profesor.class, name = "profesor"),
+        @JsonSubTypes.Type(value = Empleado.class, name= "empleado")
 })
 public abstract class Persona implements Serializable {
 

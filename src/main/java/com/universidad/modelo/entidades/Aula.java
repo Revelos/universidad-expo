@@ -6,7 +6,10 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
-
+/**
+ * Entidad aula que se relaciona con pabellon (Muchos a uno)
+ * La fecha se persiste al ingresar y actualizar la entidad
+ * */
 @Entity
 @Table(name = "aulas")
 public class Aula implements Serializable {

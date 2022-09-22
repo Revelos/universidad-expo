@@ -6,7 +6,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.io.Serializable;
-
+/**
+ * Entidad hija de la entidad persona y relacionada con carreras (Muchos a uno )
+ * */
 @Entity
 @Table(name = "alumnos")
 @PrimaryKeyJoinColumn(name = "persona_id")

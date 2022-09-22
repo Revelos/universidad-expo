@@ -6,7 +6,9 @@ import org.springframework.data.repository.CrudRepository;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import java.util.Optional;
-
+/**
+ * repositorio que contiene consultas por metodos
+ * */
 public interface AulaRepository extends CrudRepository<Aula, Integer> {
 
     Iterable<Aula> findAulaByPizarron(Pizarron pizarron);

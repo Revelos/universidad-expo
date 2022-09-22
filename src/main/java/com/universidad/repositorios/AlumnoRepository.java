@@ -6,7 +6,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+/**
+ * hereda de persona repository y se asigna el nombre para luego injectarlo
+ *
+ * consultas de metodos y por query
+ * */
 @Repository("repositorioAlumnos")
 public interface AlumnoRepository extends PersonaRespository{
 

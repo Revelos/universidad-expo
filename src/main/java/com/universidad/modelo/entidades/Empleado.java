@@ -4,7 +4,9 @@ import com.universidad.modelo.entidades.enumeradores.TipoEmplado;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-
+/**Entidad hija de la entidad persona con la relacion: pabellon (muchos a uno)
+ * se maneja el enum tipo empleado como string
+ * */
 @Entity
 @Table(name = "empleados")
 @PrimaryKeyJoinColumn(name = "persona_id")

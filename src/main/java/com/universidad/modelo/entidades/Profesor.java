@@ -7,7 +7,11 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Set;
 
-
+/**
+ * Entidad profesor que relaciona con carrea(muchos a muchos),
+ * donde se crea la table puente entre ella
+ *
+ * */
 @Entity
 @Table(name = "profesores")
 @PrimaryKeyJoinColumn(name = "persona_id")

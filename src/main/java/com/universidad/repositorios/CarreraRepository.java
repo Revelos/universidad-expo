@@ -3,7 +3,9 @@ package com.universidad.repositorios;
 import com.universidad.modelo.entidades.Carrera;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-
+/**
+ * repositorio que contiene consultas por metodos y query
+ * */
 public interface CarreraRepository extends CrudRepository<Carrera,Integer>{
 
 

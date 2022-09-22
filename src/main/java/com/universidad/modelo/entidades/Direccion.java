@@ -4,6 +4,9 @@ import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
+/**
+ *Clase integrada u propia de la Entidad a relacionar
+ * */
 @Embeddable
 public class Direccion implements Serializable {
     private String calle;

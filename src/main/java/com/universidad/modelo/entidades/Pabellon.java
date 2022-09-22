@@ -5,7 +5,13 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
-
+/**
+ * Entidad pabellon relacionada con aula (uno a muchos )
+ *
+ * se incrusta la clase direccion para utilizarla
+ *
+ * La fecha se persiste al ingresar y actualizar la entidad 
+ * */
 @Entity
 @Table(name = "pabellones")
 public class Pabellon implements Serializable {
@@ -38,8 +44,6 @@ public class Pabellon implements Serializable {
 
     public Pabellon() {
     }
-
-
 
     public Pabellon(Integer id, Double mts2, String nombre, Direccion direccion) {
         this.id = id;

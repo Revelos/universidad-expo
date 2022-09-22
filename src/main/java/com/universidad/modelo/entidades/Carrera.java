@@ -9,7 +9,12 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
-
+/**Entidad carrera relacionada con:
+ * profesor (muchos a muchos)
+ * alumnos (uno a muchos )
+ *
+ * La fecha se persiste al ingresar y actualizar la entidad
+ * */
 @Entity
 @Table(name = "carreras")
 public class Carrera implements Serializable {
