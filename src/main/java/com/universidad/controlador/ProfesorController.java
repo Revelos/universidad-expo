@@ -9,6 +9,7 @@ import com.universidad.servicios.contratos.CarreraDAO;
 import com.universidad.servicios.contratos.PersonaDAO;
 import com.universidad.servicios.contratos.ProfesorDAO;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -29,30 +30,30 @@ public class ProfesorController extends PersonaController{
     }
 
     @GetMapping("/carrera/{carrera}")
-    public List<Persona> encontrarProfesorPorCarrera(@PathVariable String carrera){
+    public ResponseEntity<?> encontrarProfesorPorCarrera(@PathVariable String carrera){
         List<Persona> listatodo = (List<Persona>) ((ProfesorDAO)service).findProfesoresByCarrera(carrera);
         if(listatodo.isEmpty()){
-            throw new BadRequestException(String.format("No se ha encontrado profesor con %ss",carrera));
+            return ResponseEntity.badRequest().body(new BadRequestException(String.format("No se ha encontrado profesor con %ss",carrera))) ;
         }
-        return listatodo;
+        return ResponseEntity.ok().body(listatodo);
     }
 
 
     @PutMapping("/{idProfesor}/carrera/{idCarrera}")
-    public Persona asignarCarreraProfesor(@PathVariable Integer idProfesor,@PathVariable Integer idCarrera){
+    public ResponseEntity<?> asignarCarreraProfesor(@PathVariable Integer idProfesor,@PathVariable Integer idCarrera){
         Optional<Persona> oAlumno = service.findById(idProfesor);
         if(!oAlumno.isPresent()){
-            throw  new BadRequestException(String.format("El alumno con id %d no existe",idProfesor));
+            return ResponseEntity.badRequest().body(new BadRequestException(String.format("El alumno con id %d no existe",idProfesor)))  ;
         }
         Optional<Carrera> oCarrera = carreraDAO.findById(idCarrera);
         if(!oCarrera.isPresent()){
-            throw  new BadRequestException(String.format("La carrera con id %d no existe",idCarrera));
+            return ResponseEntity.badRequest().body(new BadRequestException(String.format("La carrera con id %d no existe",idCarrera)))  ;
         }
         Persona alumno = oAlumno.get();
         Carrera carrera = oCarrera.get();
         Set<Carrera> carreras = new HashSet<>();
         carreras.add(carrera);
         ((Profesor)alumno).setCarreras(carreras);
-        return service.save(alumno);
+        return ResponseEntity.ok().body(service.save(alumno));
     }
 }

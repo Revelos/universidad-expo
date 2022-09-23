@@ -9,6 +9,7 @@ import com.universidad.servicios.contratos.EmpleadoDAO;
 import com.universidad.servicios.contratos.PabellonDAO;
 import com.universidad.servicios.contratos.PersonaDAO;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public class EmpleadoController extends PersonaController{
     }
 
     @GetMapping("/tipo")
-    public List<Persona> encontrarEmpleadoPorTipo(@RequestParam String tipoEmpleado){
+    public ResponseEntity<?> encontrarEmpleadoPorTipo(@RequestParam String tipoEmpleado){
         List<Persona> listatodo=null;
         try{
         listatodo = (List<Persona>) ((EmpleadoDAO)service).findEmpleadoByTipoEmpleado(TipoEmplado.valueOf(tipoEmpleado));
@@ -34,25 +35,25 @@ public class EmpleadoController extends PersonaController{
             throw new BadRequestException(String.format("No se ha encontrado ningun empleado con este tipo %s",tipoEmpleado));
         }
         }catch (IllegalArgumentException e){
-            throw new BadRequestException(String.format("Tipo de empleado %s incorrecto",tipoEmpleado));
+            return ResponseEntity.badRequest().body(new BadRequestException(String.format("Tipo de empleado %s incorrecto",tipoEmpleado))) ;
         }
-        return listatodo;
+        return ResponseEntity.ok().body(listatodo);
     }
 
     @PutMapping("/{idEmpleado}/carrera/{idPabellon}")
-    public Persona asignarEmpleadosPabellon(@PathVariable Integer idEmpleado, @PathVariable Integer idPabellon){
+    public ResponseEntity<?> asignarEmpleadosPabellon(@PathVariable Integer idEmpleado, @PathVariable Integer idPabellon){
         Optional<Persona> oAlumno = service.findById(idEmpleado);
         if(!oAlumno.isPresent()){
-            throw  new BadRequestException(String.format("El empleado con id %d no existe",idEmpleado));
+            return ResponseEntity.badRequest().body(new BadRequestException(String.format("El empleado con id %d no existe",idEmpleado)));
         }
         Optional<Pabellon> oPabellon = pabellonDAO.findById(idPabellon);
         if(!oPabellon.isPresent()){
-            throw  new BadRequestException(String.format("El pabellon con id %d no existe",idPabellon));
+            return ResponseEntity.badRequest().body(new BadRequestException(String.format("El pabellon con id %d no existe",idPabellon)));
         }
         Persona empleado = oAlumno.get();
         Pabellon pabellon = oPabellon.get();
         ((Empleado)empleado).setPabellon(pabellon);
-        return service.save(empleado);
+        return ResponseEntity.ok().body(service.save(empleado));
     }
 
 }

@@ -2,6 +2,8 @@ package com.universidad.controlador;
 
 import com.universidad.exception.BadRequestException;
 import com.universidad.servicios.contratos.GenericDAO;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,31 +19,32 @@ public class GenericController<E,S extends GenericDAO<E>>{
     }
 
     @GetMapping
-    public List<E> obtenerTodos(){
+    public ResponseEntity<?> obtenerTodos(){
         List<E> listatodo = (List<E>) service.findAll();
         if(listatodo.isEmpty()){
-            throw new BadRequestException(String.format("No se han encontrado %ss",nombreEntidad));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new BadRequestException(String.format("No se han encontrado %ss",nombreEntidad)));
         }
-        return listatodo;
+        return ResponseEntity.status(HttpStatus.OK).body(listatodo);
     }
 
     @GetMapping(value = "/{codigo}")
-    public E obtenerPorId(@PathVariable(value = "codigo",required = false)Integer id){
+    public ResponseEntity<?> obtenerPorId(@PathVariable(value = "codigo",required = false)Integer id){
         Optional<E> oPersona = service.findById(id);
         if(!oPersona.isPresent()){
-            throw new BadRequestException(String.format("El alumno con id %d no existe",id));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new BadRequestException(String.format("El alumno con id %d no existe",id))) ;
         }
-        return oPersona.get();
+        return ResponseEntity.status(HttpStatus.OK).body(oPersona.get());
     }
 
     @PostMapping
-    public E altaAlumno(@RequestBody E e){
-        return service.save(e);
+    public ResponseEntity<?> altaAlumno(@RequestBody E e){
+        return ResponseEntity.ok().body(service.save(e));
     }
 
     @DeleteMapping(value = "/{id}")
-    public void borrarPorId(@PathVariable Integer id){
+    public ResponseEntity<?> borrarPorId(@PathVariable Integer id){
         service.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

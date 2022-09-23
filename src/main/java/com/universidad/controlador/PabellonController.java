@@ -4,6 +4,7 @@ import com.universidad.exception.BadRequestException;
 import com.universidad.modelo.entidades.Aula;
 import com.universidad.modelo.entidades.Pabellon;
 import com.universidad.servicios.contratos.PabellonDAO;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,12 +20,12 @@ public class PabellonController extends GenericController<Pabellon, PabellonDAO>
     }
 
     @GetMapping("/aulas-pizarron/{localidad}")
-    public List<Pabellon> buscarPabellonesPorLocalidad(@PathVariable String localidad){
+    public ResponseEntity<?> buscarPabellonesPorLocalidad(@PathVariable String localidad){
         List<Pabellon> pabellon = (List<Pabellon>) service.findByDireccionLocalidad(localidad);
         if(pabellon.isEmpty()){
-            throw new BadRequestException(String.format("No se ha encontrado ningun pabellon con localidad%s",localidad));
+            return ResponseEntity.badRequest().body(new BadRequestException(String.format("No se ha encontrado ningun pabellon con localidad%s",localidad)));
         }
-        return pabellon;
+        return ResponseEntity.ok().body(pabellon);
     }
 
     @GetMapping("/aulas-nombre/{nombre}")

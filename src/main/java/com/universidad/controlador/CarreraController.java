@@ -24,7 +24,7 @@ public class CarreraController extends GenericController<Carrera,CarreraDAO>{
     }
 
     @PutMapping("/{id}")
-    public Carrera actualizarCarrera(@PathVariable(value = "id") Integer id,@RequestBody Carrera carrera){
+    public ResponseEntity<?> actualizarCarrera(@PathVariable(value = "id") Integer id,@RequestBody Carrera carrera){
         Carrera carreraUpdate=null;
         Optional<Carrera> oCarrera = service.findById(id);
         if(!oCarrera.isPresent()){
@@ -34,78 +34,43 @@ public class CarreraController extends GenericController<Carrera,CarreraDAO>{
         carreraUpdate = oCarrera.get();
         carreraUpdate.setCantidadAnios(carrera.getCantidadAnios());
         carreraUpdate.setCantidadMaterias(carrera.getCantidadMaterias());
-        return service.save(carreraUpdate);
+        return ResponseEntity.ok().body(service.save(carreraUpdate));
     }
 
     @GetMapping("/carrera-nombre")
-    public List<Carrera> encontrarCarreraPorNombre(@RequestParam String nombre){
+    public ResponseEntity<?> encontrarCarreraPorNombre(@RequestParam String nombre){
         List<Carrera> listatodo = (List<Carrera>) service.findCarreraByNombreContains(nombre);
         if(listatodo.isEmpty()){
             throw new BadRequestException(String.format("No se ha encontrado carrera llamada %s",nombre));
         }
-        return listatodo;
+        return ResponseEntity.ok().body(listatodo);
     }
 
     @GetMapping("/carrera-nombre-ignorecase")
-    public List<Carrera> encontrarCarreraPorNombreIgnoreCase(@RequestParam String nombre){
+    public ResponseEntity<?> encontrarCarreraPorNombreIgnoreCase(@RequestParam String nombre){
         List<Carrera> listatodo = (List<Carrera>) service.findCarreraByNombreContainsIgnoreCase(nombre);
         if(listatodo.isEmpty()){
-            throw new BadRequestException(String.format("No se ha encontrado carrera llamada %s",nombre));
+            return ResponseEntity.ok().body(new BadRequestException(String.format("No se ha encontrado carrera llamada %s",nombre))) ;
         }
-        return listatodo;
+        return ResponseEntity.ok().body(listatodo);
     }
 
     @GetMapping("/carrera-anos/{anos}")
-    public List<Carrera> encontrarCarreraPorAnos(@PathVariable Integer anos){
+    public ResponseEntity<?> encontrarCarreraPorAnos(@PathVariable Integer anos){
         List<Carrera> listatodo = (List<Carrera>) service.findCarreraByCantidadAniosAfter(anos);
         if(listatodo.isEmpty()){
-            throw new BadRequestException(String.format("No se ha encontrado carrera llamada %s",anos));
+            return ResponseEntity.badRequest().body(new BadRequestException(String.format("No se ha encontrado carrera llamada %s",anos))) ;
         }
-        return listatodo;
+        return ResponseEntity.ok().body(listatodo);
     }
 
     @GetMapping("/carrera-profesor")
-    public List<Carrera> encontrarCarreraPorProfesor(@RequestParam String nombre,@RequestParam String apellido){
+    public ResponseEntity<?> encontrarCarreraPorProfesor(@RequestParam String nombre,@RequestParam String apellido){
         List<Carrera> listatodo = (List<Carrera>) service.buscarCarrerasPorProfesorNombreYApellido(nombre,apellido);
         if(listatodo.isEmpty()){
-            throw new BadRequestException(String.format("No se ha encontrado carrera con profesores llamados %s %s",nombre,apellido));
+            return ResponseEntity.badRequest().body(new BadRequestException(String.format("No se ha encontrado carrera con profesores llamados %s %s",nombre,apellido))) ;
         }
-        return listatodo;
+        return ResponseEntity.ok().body(listatodo) ;
     }
 
-    /*@RequestMapping(value = "/{codigo}")
-    public Carrera obtenerPorId(@PathVariable(value = "codigo",required = false)Integer id){
-        Optional<Carrera> oCarrera = service.findById(id);
-        if(!oCarrera.isPresent()){
-            throw new BadRequestException(String.format("La carrera con id %d no existe",id));
-        }
-        return oCarrera.get();
-    }*/
-    /*@RequestMapping(method = RequestMethod.POST)
-    public Carrera ingresarCarrera(@RequestBody Carrera carrera){
-
-        if(carrera.getCantidadAnios()<0){
-            throw new BadRequestException("El campo no puede ser menor a 0");
-        }
-        if(carrera.getCantidadMaterias()<0){
-            throw new BadRequestException("El campo no puede ser menor a cero");
-        }
-
-        return  service.save(carrera);
-
-        /*try{
-            Carrera c =carreraDAO.save(carrera);
-            return ResponseEntity.status(HttpStatus.OK).body(c);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new String());
-    }*/
-
-
-
-    /*@DeleteMapping(value = "/{id}")
-    public void eliminarCarrera(@PathVariable Integer id){
-        service.deleteById(id);
-    }*/
 }
