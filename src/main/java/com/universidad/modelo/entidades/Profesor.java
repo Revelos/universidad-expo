@@ -21,7 +21,7 @@ public class Profesor extends Persona{
 
     @ManyToMany(fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST,CascadeType.MERGE})
     @JoinTable(name = "profesor_carrera",joinColumns = @JoinColumn(name = "profesor_id"),inverseJoinColumns = @JoinColumn(name = "carrera_id"))
-    @JsonIgnoreProperties({"hibernateLazyInitializer","profesores"})
+    @JsonIgnoreProperties({"hibernateLazyInitializer","profesores","alumnos"})
     private Set<Carrera> carreras;
 
 

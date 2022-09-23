@@ -38,11 +38,11 @@ public class Carrera implements Serializable {
     @Column(name = "fecha_modificacion")
     private LocalDateTime fechaModificada;
 
-    @JsonIgnoreProperties({"carreras"})
+    @JsonIgnoreProperties({"carreras","direccion"})
     @ManyToMany(mappedBy = "carreras",fetch = FetchType.LAZY)
     private Set<Profesor> profesores;
 
-    @JsonIgnoreProperties({"carrera"})
+    @JsonIgnoreProperties({"carrera","direccion"})
     @OneToMany(mappedBy = "carrera",fetch = FetchType.LAZY)
     private Set<Alumno> alumnos;
 
